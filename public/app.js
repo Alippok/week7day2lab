@@ -28,12 +28,18 @@ window.onload = function(){
   createAppendOptionsElements(countryNames);
   // console.log(dropDown[0])
 
-  var location = {lat: 55.9519, lng: -3.1899};
-  var map = new Map(location, 13);
+  
 
   dropDown.onchange = function(){
     var country = retrieveCountryStats(allCountriesObjects, dropDown.value);
     // console.log("country", country);
+   
+    
+    var countryLatLng = retrieveCountryLatLng(allCountriesObjects, dropDown.value)
+    // console.log(countryLatLng)
+    var map = new Map(countryLatLng, 6)
+    
+
     var borderingCountriesCodes = retrieveBorderingCountriesCodes(allCountriesObjects, dropDown.value);
     // console.log('bordering country codes', countryCodes)
     var borderingCountriesNames = retrieveBorderingCountriesNames(allCountriesObjects, borderingCountriesCodes);
@@ -103,6 +109,17 @@ var retrieveCountryStats = function(array, countryName){
     }
   });
   return countryArray
+}
+
+var retrieveCountryLatLng = function(array, countryName){
+  var latlng;
+  array.forEach(function(country){
+    // console.log(country)
+    if (country.name === countryName){
+      latlng = {lat: country.latlng[0], lng: country.latlng[1]};
+    }
+  });
+  return latlng
 }
 
 var retrieveBorderingCountriesCodes = function(array, countryName){
