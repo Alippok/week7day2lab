@@ -5,17 +5,19 @@ window.onload = function(){
 
   var request = new XMLHttpRequest();//a new XMLHttpRequest object
   request.open("GET", url); //tell request the ACTION and LOCATION
-
+  
   request.onload = function(){//tell it what to do when it has finished getting data
     if(request.status === 200)//200 is an ok status/complete
       console.log('got the data, success');
       var jsonString = request.responseText;//what does this responseText do?
       
       localStorage.setItem("all countries", jsonString)
-
-    };
-
+  };
   request.send();//actually go of and do what we defined above
+
+  
+
+
 
   var dropDown = document.getElementById("dropdown")
   var allCountriesString = getAllFromLocalStorage("all countries");
@@ -26,12 +28,15 @@ window.onload = function(){
   createAppendOptionsElements(countryNames);
   // console.log(dropDown[0])
 
+  var location = {lat: 55.9519, lng: -3.1899};
+  var map = new Map(location, 13);
+
   dropDown.onchange = function(){
     var country = retrieveCountryStats(allCountriesObjects, dropDown.value);
     // console.log("country", country);
     var borderingCountriesCodes = retrieveBorderingCountriesCodes(allCountriesObjects, dropDown.value);
     // console.log('bordering country codes', countryCodes)
-    var borderingCountriesNames = retrieveBorderinCountriesNames(allCountriesObjects, borderingCountriesCodes);
+    var borderingCountriesNames = retrieveBorderingCountriesNames(allCountriesObjects, borderingCountriesCodes);
     // console.log(borderingCountriesNames)
 
     var borderingCountriesStats = retrieveMultiCountryStats( allCountriesObjects, borderingCountriesNames, retrieveCountryStats );
@@ -48,8 +53,8 @@ window.onload = function(){
 
     // displayArea.removeChild(displayArea.childNodes[0]);
     if (displayArea.childNodes.length === 0 ){
-    displayArea.appendChild( countryDisplayElement );
-    borderingCountriesDisplayArea.appendChild( borderingCountriesElement );
+      displayArea.appendChild( countryDisplayElement );
+      borderingCountriesDisplayArea.appendChild( borderingCountriesElement );
     } else {
       displayArea.removeChild(displayArea.childNodes[0])
       borderingCountriesDisplayArea.removeChild( borderingCountriesDisplayArea.childNodes[1])
@@ -57,14 +62,7 @@ window.onload = function(){
       displayArea.appendChild(countryDisplayElement);
       borderingCountriesDisplayArea.appendChild( borderingCountriesElement );
     }
-    
-
-
   }
-
-  
-
-
 };
 
 // var countryNames = getCountryNames(countries)
@@ -117,7 +115,7 @@ var retrieveBorderingCountriesCodes = function(array, countryName){
     return countryCodes;
 }
 
-var retrieveBorderinCountriesNames = function(array1, array2){
+var retrieveBorderingCountriesNames = function(array1, array2){
   var countriesStats = [];
   var countriesNames = [];
   var codes = array2.pop()
