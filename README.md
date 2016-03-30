@@ -16,7 +16,7 @@ Filter select to only show countries in a region, sub-region.
 Country Map Lab
 Extending the country application
 
-Display a map centered on the selected country.
+Display a map centered on the selected country. DONE
 Add a marker to the country.
 Add an info window to the marker displaying the country statistics.
 Further: Add new Functionality. eg
