@@ -27,8 +27,9 @@ window.onload = function(){
   // console.log("country names", countryNames)
   createAppendOptionsElements(countryNames);
   // console.log(dropDown[0])
-
-  
+  var map = new Map({lat:20, lng:0}, 1)
+  map.bindClick();
+  // console.log(map)
 
   dropDown.onchange = function(){
     var country = retrieveCountryStats(allCountriesObjects, dropDown.value);
@@ -36,8 +37,9 @@ window.onload = function(){
    
     
     var countryLatLng = retrieveCountryLatLng(allCountriesObjects, dropDown.value)
-    // console.log(countryLatLng)
-    var map = new Map(countryLatLng, 6)
+    console.log(countryLatLng)
+    map.updateMap(countryLatLng, 6);
+    
     
 
     var borderingCountriesCodes = retrieveBorderingCountriesCodes(allCountriesObjects, dropDown.value);

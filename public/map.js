@@ -7,6 +7,11 @@ var Map = function(center, zoom){
     zoom: zoom
   });
 
+  this.updateMap = function( center, zoom){
+    this.googleMap.panTo(center),
+    this.googleMap.setZoom(zoom)
+  }
+
   this.addMarker = function( latlng, title){
     var marker = new google.maps.Marker({
       position: latlng,
@@ -16,11 +21,13 @@ var Map = function(center, zoom){
     return marker;
   }
 
-  // this.bindClick = function(){
-  //   google.maps.event.addListener(this.googleMap, "click", function(event){
-  //     this.addmarker(event.latLng)
-  //   }.bind(this))
-  // };
+  this.bindClick = function(){
+    google.maps.event.addListener(this.googleMap, "click", function(event){
+      this.addMarker(event.latLng)
+    }.bind(this))
+  };
+
+
     
 }
 
