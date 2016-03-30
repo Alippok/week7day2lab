@@ -17,7 +17,7 @@ Country Map Lab
 Extending the country application
 
 Display a map centered on the selected country. DONE
-Add a marker to the country.
+Add a marker to the country. DONE
 Add an info window to the marker displaying the country statistics.
 Further: Add new Functionality. eg
 

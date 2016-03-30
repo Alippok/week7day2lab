@@ -35,33 +35,29 @@ window.onload = function(){
   dropDown.onchange = function(){
     var country = retrieveCountryStats(allCountriesObjects, dropDown.value);
     // console.log("country", country);
-   
-    
     var countryLatLng = retrieveCountryLatLng(allCountriesObjects, dropDown.value)
     // console.log(countryLatLng)
-    map.updateMap(countryLatLng, 6);
-    map.addMarker(countryLatLng, country[0])
 
-    
+    map.updateMap(countryLatLng, 6);
+    var countryStatsString = createCountryStatsString(country)
+    console.log(countryStatsString)
+    map.addInfoWindow(countryLatLng, country[0], countryStatsString)    
     
 
     var borderingCountriesCodes = retrieveBorderingCountriesCodes(allCountriesObjects, dropDown.value);
     // console.log('bordering country codes', countryCodes)
     var borderingCountriesNames = retrieveBorderingCountriesNames(allCountriesObjects, borderingCountriesCodes);
     // console.log(borderingCountriesNames)
-
     var borderingCountriesStats = retrieveMultiCountryStats( allCountriesObjects, borderingCountriesNames, retrieveCountryStats );
     // console.log(borderingCountriesStats)
     var borderingCountriesElement = createMultiCountryDisplayElements( borderingCountriesStats, createCountryDisplayElement )
-    var borderingCountriesDisplayArea = document.getElementById('bordering_countries')
 
+
+    var borderingCountriesDisplayArea = document.getElementById('bordering_countries')
     var countryDisplayElement = createCountryDisplayElement(country);
     var displayArea = document.getElementById('display_area');
-    
-
     // console.log(body)
     // console.log(displayArea)
-
     // displayArea.removeChild(displayArea.childNodes[0]);
     if (displayArea.childNodes.length === 0 ){
       displayArea.appendChild( countryDisplayElement );
@@ -114,6 +110,11 @@ var retrieveCountryStats = function(array, countryName){
     }
   });
   return countryArray
+}
+
+var createCountryStatsString = function(array){
+  var string = array[0] + "\n" + array[1] + "\n" + array[2].toString();
+  return string
 }
 
 var retrieveCountryLatLng = function(array, countryName){

@@ -21,6 +21,17 @@ var Map = function(center, zoom){
     return marker;
   }
 
+  this.addInfoWindow = function( latlng, title, info){
+    var marker = this.addMarker(latlng, title);
+    marker.addListener("click", function(){
+      var infoWindow = new google.maps.InfoWindow({
+        content: info
+      });
+      infoWindow.open(this.map, marker);
+    });
+    
+  }
+
   this.bindClick = function(){
     google.maps.event.addListener(this.googleMap, "click", function(event){
       this.addMarker(event.latLng)
