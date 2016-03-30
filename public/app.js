@@ -16,7 +16,8 @@ window.onload = function(){
   request.send();//actually go of and do what we defined above
 
   
-
+  
+  
 
 
   var dropDown = document.getElementById("dropdown")
@@ -37,8 +38,10 @@ window.onload = function(){
    
     
     var countryLatLng = retrieveCountryLatLng(allCountriesObjects, dropDown.value)
-    console.log(countryLatLng)
+    // console.log(countryLatLng)
     map.updateMap(countryLatLng, 6);
+    map.addMarker(countryLatLng, country[0])
+
     
     
 
