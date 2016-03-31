@@ -20,6 +20,7 @@ window.onload = function(){
   var allCountriesString = getAllFromLocalStorage("all countries");
   var allCountriesObjects = JSON.parse(allCountriesString);
   var map = new Map({lat:20, lng:0}, 1)
+  map.bindClick();
 
   var countryNames = getCountryNames(allCountriesObjects);
   // console.log("country names", countryNames)
@@ -27,10 +28,6 @@ window.onload = function(){
   var dropDownOptions = createOptionsElements( countryNames );
   appendOptionsElements( dropDown, dropDownOptions );
 
-  map.bindClick();
-  // console.log(dropDown[0])
- 
-  // console.log(map)
 
     dropDown.onchange = function(){
       var country = retrieveCountryStats(allCountriesObjects, dropDown.value);
@@ -52,22 +49,27 @@ window.onload = function(){
       // console.log(borderingCountriesStats)
       var borderingCountriesElement = createMultiCountryDisplayElements( borderingCountriesStats, createCountryDisplayElement )
 
-
-      var borderingCountriesDisplayArea = document.getElementById('bordering_countries')
-      var countryDisplayElement = createCountryDisplayElement(country);
       var displayArea = document.getElementById('display_area');
+      var countryDisplayElement = createCountryDisplayElement(country);
+      var borderingCountriesDisplayArea = document.getElementById('bordering_countries')
+      
       // console.log(body)
       // console.log(displayArea)
       // displayArea.removeChild(displayArea.childNodes[0]);
       if (displayArea.childNodes.length === 0 ){
-        displayArea.appendChild( countryDisplayElement );
-        borderingCountriesDisplayArea.appendChild( borderingCountriesElement );
+        // displayArea.appendChild( countryDisplayElement );
+        appendChildToElement( displayArea, countryDisplayElement )
+        appendChildToElement( borderingCountriesDisplayArea, borderingCountriesElement )
+        // borderingCountriesDisplayArea.appendChild( borderingCountriesElement );
       } else {
-        displayArea.removeChild(displayArea.childNodes[0])
-        borderingCountriesDisplayArea.removeChild( borderingCountriesDisplayArea.childNodes[1])
-
-        displayArea.appendChild(countryDisplayElement);
-        borderingCountriesDisplayArea.appendChild( borderingCountriesElement );
+        // displayArea.removeChild(displayArea.childNodes[0])
+        removeChildFromElement( displayArea, 0 )
+        removeChildFromElement ( borderingCountriesDisplayArea, 1)
+        // borderingCountriesDisplayArea.removeChild( borderingCountriesDisplayArea.childNodes[1])
+        appendChildToElement( displayArea, countryDisplayElement )
+        appendChildToElement( borderingCountriesDisplayArea, borderingCountriesElement )
+        // displayArea.appendChild(countryDisplayElement);
+        // borderingCountriesDisplayArea.appendChild( borderingCountriesElement );
       }
     }
 };
@@ -202,7 +204,13 @@ var createCountryDisplayElement = function(array){
   return divElement;
 };
 
+var appendChildToElement = function(element, child){
+  element.appendChild(child);
+}
 
+var removeChildFromElement = function(element, childIndex){
+  element.removeChild(element.childNodes[childIndex]);
+}
 
 
 
