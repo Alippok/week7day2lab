@@ -6,70 +6,70 @@ window.onload = function(){
   var request = new XMLHttpRequest();//a new XMLHttpRequest object
   request.open("GET", url); //tell request the ACTION and LOCATION
   
-  request.onload = function(){//tell it what to do when it has finished getting data
-    if(request.status === 200)//200 is an ok status/complete
-      console.log('got the data, success');
-      var jsonString = request.responseText;//what does this responseText do?
-      
-      localStorage.setItem("all countries", jsonString)
-  };
+    request.onload = function(){//tell it what to do when it has finished getting data
+      if(request.status === 200)//200 is an ok status/complete
+        console.log('got the data, success');
+        var jsonString = request.responseText;//what does this responseText do?
+        
+        localStorage.setItem("all countries", jsonString)
+      };
+  
   request.send();//actually go of and do what we defined above
-
-  
-  
-  
-
 
   var dropDown = document.getElementById("dropdown")
   var allCountriesString = getAllFromLocalStorage("all countries");
   var allCountriesObjects = JSON.parse(allCountriesString);
-  
+  var map = new Map({lat:20, lng:0}, 1)
+
   var countryNames = getCountryNames(allCountriesObjects);
   // console.log("country names", countryNames)
-  createAppendOptionsElements(countryNames);
-  // console.log(dropDown[0])
-  var map = new Map({lat:20, lng:0}, 1)
+  // createAppendOptionsElements(countryNames); //Split this function as it was doing two things.
+  var dropDownOptions = createOptionsElements( countryNames );
+  appendOptionsElements( dropDown, dropDownOptions );
+
   map.bindClick();
+  // console.log(dropDown[0])
+ 
   // console.log(map)
 
-  dropDown.onchange = function(){
-    var country = retrieveCountryStats(allCountriesObjects, dropDown.value);
-    // console.log("country", country);
-    var countryLatLng = retrieveCountryLatLng(allCountriesObjects, dropDown.value)
-    // console.log(countryLatLng)
+    dropDown.onchange = function(){
+      var country = retrieveCountryStats(allCountriesObjects, dropDown.value);
+      // console.log("country", country);
+      var countryLatLng = retrieveCountryLatLng(allCountriesObjects, dropDown.value)
+      // console.log(countryLatLng)
 
-    map.updateMap(countryLatLng, 6);
-    var countryStatsString = createCountryStatsString(country)
-    console.log(countryStatsString)
-    map.addInfoWindow(countryLatLng, country[0], countryStatsString)    
-    
+      map.updateMap(countryLatLng, 6);
+      var countryStatsString = createCountryStatsString(country)
+      console.log(countryStatsString)
+      map.addInfoWindow(countryLatLng, country[0], countryStatsString)    
+      
 
-    var borderingCountriesCodes = retrieveBorderingCountriesCodes(allCountriesObjects, dropDown.value);
-    // console.log('bordering country codes', countryCodes)
-    var borderingCountriesNames = retrieveBorderingCountriesNames(allCountriesObjects, borderingCountriesCodes);
-    // console.log(borderingCountriesNames)
-    var borderingCountriesStats = retrieveMultiCountryStats( allCountriesObjects, borderingCountriesNames, retrieveCountryStats );
-    // console.log(borderingCountriesStats)
-    var borderingCountriesElement = createMultiCountryDisplayElements( borderingCountriesStats, createCountryDisplayElement )
+      var borderingCountriesCodes = retrieveBorderingCountriesCodes(allCountriesObjects, dropDown.value);
+      // console.log('bordering country codes', countryCodes)
+      var borderingCountriesNames = retrieveBorderingCountriesNames(allCountriesObjects, borderingCountriesCodes);
+      // console.log(borderingCountriesNames)
+      var borderingCountriesStats = retrieveMultiCountryStats( allCountriesObjects, borderingCountriesNames, retrieveCountryStats );
+      // console.log(borderingCountriesStats)
+      var borderingCountriesElement = createMultiCountryDisplayElements( borderingCountriesStats, createCountryDisplayElement )
 
 
-    var borderingCountriesDisplayArea = document.getElementById('bordering_countries')
-    var countryDisplayElement = createCountryDisplayElement(country);
-    var displayArea = document.getElementById('display_area');
-    // console.log(body)
-    // console.log(displayArea)
-    // displayArea.removeChild(displayArea.childNodes[0]);
-    if (displayArea.childNodes.length === 0 ){
-      displayArea.appendChild( countryDisplayElement );
-      borderingCountriesDisplayArea.appendChild( borderingCountriesElement );
-    } else {
-      displayArea.removeChild(displayArea.childNodes[0])
-      borderingCountriesDisplayArea.removeChild( borderingCountriesDisplayArea.childNodes[1])
+      var borderingCountriesDisplayArea = document.getElementById('bordering_countries')
+      var countryDisplayElement = createCountryDisplayElement(country);
+      var displayArea = document.getElementById('display_area');
+      // console.log(body)
+      // console.log(displayArea)
+      // displayArea.removeChild(displayArea.childNodes[0]);
+      if (displayArea.childNodes.length === 0 ){
+        displayArea.appendChild( countryDisplayElement );
+        borderingCountriesDisplayArea.appendChild( borderingCountriesElement );
+      } else {
+        displayArea.removeChild(displayArea.childNodes[0])
+        borderingCountriesDisplayArea.removeChild( borderingCountriesDisplayArea.childNodes[1])
 
-      displayArea.appendChild(countryDisplayElement);
-      borderingCountriesDisplayArea.appendChild( borderingCountriesElement );
+        displayArea.appendChild(countryDisplayElement);
+        borderingCountriesDisplayArea.appendChild( borderingCountriesElement );
+      }
     }
-  }
 };
 
 // var countryNames = getCountryNames(countries)
@@ -90,14 +90,20 @@ var getCountryNames = function(array){
   return countryNames;
 };
 
-var createAppendOptionsElements = function(array){
-  var dropDown = document.getElementById("dropdown");
-  
+var createOptionsElements = function(array){
+  options = []
   array.forEach(function(countryName){
     var option = document.createElement("option")
     option.innerText = countryName;
     option.value = countryName;
-    dropDown.appendChild(option);
+    options.push(option)
+  })
+  return options;
+}
+
+var appendOptionsElements = function(element, array){
+  array.forEach(function(option){
+    element.appendChild(option);
   })
 };
 

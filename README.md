@@ -18,7 +18,7 @@ Extending the country application
 
 Display a map centered on the selected country. DONE
 Add a marker to the country. DONE
-Add an info window to the marker displaying the country statistics.
+Add an info window to the marker displaying the country statistics. DONE
 Further: Add new Functionality. eg
 
 Add a find my country button; displaying the country based on the users location.
