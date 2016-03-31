@@ -33,11 +33,12 @@ window.onload = function(){
       var country = retrieveCountryStats(allCountriesObjects, dropDown.value);
       // console.log("country", country);
       var countryLatLng = retrieveCountryLatLng(allCountriesObjects, dropDown.value)
-      // console.log(countryLatLng)
+      // console.log(countryLatLng)//could retreive the country's latlng in above function instead and then
+      //access it below using index?
 
       map.updateMap(countryLatLng, 6);
       var countryStatsString = createCountryStatsString(country)
-      console.log(countryStatsString)
+      // console.log(countryStatsString)
       map.addInfoWindow(countryLatLng, country[0], countryStatsString)    
       
 
@@ -48,6 +49,9 @@ window.onload = function(){
       var borderingCountriesStats = retrieveMultiCountryStats( allCountriesObjects, borderingCountriesNames, retrieveCountryStats );
       // console.log(borderingCountriesStats)
       var borderingCountriesElement = createMultiCountryDisplayElements( borderingCountriesStats, createCountryDisplayElement )
+
+      // map.addMultiInfoWindows( borderingCountriesStats )//need the bordering country latlngs. Use 
+      //retrieve MultiCountryStats function
 
       var displayArea = document.getElementById('display_area');
       var countryDisplayElement = createCountryDisplayElement(country);

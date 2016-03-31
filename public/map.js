@@ -29,8 +29,14 @@ var Map = function(center, zoom){
       });
       infoWindow.open(this.map, marker);
     });
-    
   }
+
+  // this.addMultiInfoWindows = function(array){
+  //   console.log(array)
+  //   array.forEach(function(country){
+  //     this.addMarker(country[.latLng], country.name);//don't have the latlng of each bordering country yet!
+  //   }.bind(this));
+  // }
 
   this.bindClick = function(){
     google.maps.event.addListener(this.googleMap, "click", function(event){
